@@ -1,4 +1,4 @@
-# Hydrating tweets using Twarc (Python library) in terminal 
+# Hydrating tweets using Twarc
 
 If you are in possession of a list of tweet ID’s you can get the full tweets and tweet metadata using the python library Twarc. This library can provide a json file with the full twitter data if you input a txt file with the tweet ID’s. This process of getting the full twitter data is called hydrating. NB The tweet ID’s in the txt file should be on separate lines, with no separators.
 
