@@ -10,7 +10,7 @@ This guide tells you how to use Twarc in the terminal. First you check that you 
 ### python --version ###
 
 # Install twarc library
-pip3 install twarc 
+### pip3 install twarc 
 
 Now you need to configure twarc in the terminal 
 
