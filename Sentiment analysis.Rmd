@@ -1,0 +1,156 @@
+---
+title: "Sentiment analysis"
+author: "Astrid Rybner"
+date: "14/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+In this code sentiment analysis is conducted using the Sentida package. 
+Additionally, the development in sentiment over time is plotted using the gganimatepackage. 
+
+```{r}
+# load packages 
+library(pacman)
+p_load(rlist, Sentida, ggplot2, tidyverse, gganimate, gifski)
+
+# set theme 
+theme_set(theme_bw()) 
+
+# load data
+tweets_before <- read.csv("tweets_before.csv")
+tweets_after <- read.csv("tweets_after.csv")
+
+```
+
+## Creating functions for data cleaning and summary 
+
+1. The sentiment_func calculates the total sentiment per tweet and add this value in a new column.
+
+2. The date_func cleans the date column (created_at) and make it into date format, so it can be used in the gganimate plots and returns a dataframe where the column has been cleaned. 
+
+3. The mean_sentiment_pr_day calculates the mean sentiment per unique date in the dataset
+
+```{r}
+
+# sentiment function 
+sentiment_func <- function(df){
+  sentiment <- c()
+  for (i in df$full_text) {
+    l = sentida(i, output = "total")
+    sentiment = list.append(sentiment, l)
+  }
+  df <- cbind(df,sentiment)
+  return(df)
+}
+
+
+# date format function
+date_func <- function(df){
+  df$created_at <- str_replace_all(df$created_at, "\\ .*", "")
+  df$created_at <- str_replace_all(df$created_at, "2020-", "20-")
+  df$created_at <-  as.Date(df$created_at)
+  return(df)
+  }
+
+# get average sentiment pr unique dates 
+mean_sentiment_pr_day =
+  function(df){
+   summary = df %>% group_by(created_at) %>% summarise(mean_sentiment=mean(sentiment),day=min(created_at)) %>% select(-created_at)
+  return(summary)
+   }
+
+```
+
+
+## Getting only tweets with the hashtags #dkgreen and #dkpol (before and after the chosen date 5/5)
+
+```{r}
+#dkgreen before
+dkgreen_before <- filter(tweets_before, dkgreen=="True")
+
+#dkgreen after
+dkgreen_after <- filter(tweets_after, dkgreen=="True")
+
+#dkpol before
+dkpol_before <- filter(tweets_before, dkpol=="True")
+
+#dkpol after
+dkpol_after <- filter(tweets_after, dkpol=="True")
+
+```
+
+## Applying functions to the four datasets 
+```{r}
+
+dkgreen_before <- dkgreen_before %>% sentiment_func() %>% date_func() 
+
+dkgreen_after <- dkgreen_after %>% sentiment_func() %>% date_func()
+
+dkpol_before <- dkpol_before %>% sentiment_func() %>% date_func()
+
+dkpol_after <- dkpol_after %>% sentiment_func() %>% date_func()
+
+```
+## Getting mean sentiment scores per unique date in a summary dataframe
+
+```{r}
+
+dkgreen_before_sum <- dkgreen_before %>% mean_sentiment_pr_day()
+dkgreen_after_sum <- dkgreen_after %>% mean_sentiment_pr_day()
+dkpol_before_sum <- dkpol_before %>% mean_sentiment_pr_day()
+dkpol_after_sum <- dkpol_after %>% mean_sentiment_pr_day()
+
+```
+
+## Making animated plots
+
+```{r, echo=FALSE}
+anim1 <- ggplot(dkgreen_before_sum, aes(day, mean_sentiment))+geom_line()
+anim1 + transition_states(day, 
+                         transition_length = 1,
+                         state_length = 1)+
+                        transition_reveal(day)+
+                        labs(x="Date", y="Sentiment Score", title = "#dkgreen before 5/5 2020")
+```
+
+
+```{r, echo=FALSE}
+anim2 <- ggplot(dkgreen_after_sum, aes(day, mean_sentiment))+geom_line()
+anim2 + transition_states(day, 
+                          transition_length = 1,
+                          state_length = 1)+
+  transition_reveal(day)+
+  labs(x="Date", y="Sentiment Score", title = "#dkgreen after 5/5 2020")
+```
+
+
+```{r, echo=FALSE}
+anim3 <- ggplot(dkpol_before_sum, aes(day, mean_sentiment))+geom_line()
+anim3 + transition_states(day, 
+                          transition_length = 1,
+                          state_length = 1)+
+  transition_reveal(day)+
+  labs(x="Date", y="Sentiment Score", title = "#dkpol before 5/5 2020")
+```
+
+
+```{r, echo=FALSE}
+anim4 <- ggplot(dkpol_after_sum, aes(day, mean_sentiment))+geom_line()
+anim4 + transition_states(day, 
+                          transition_length = 1,
+                          state_length = 1)+
+                          transition_reveal(day)+
+
+    labs(x="Date", y="Sentiment Score", title = "#dkpol after 5/5 2020")
+```
+
+
+
+
+
