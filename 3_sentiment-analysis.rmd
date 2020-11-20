@@ -17,7 +17,7 @@ Additionally, the development in sentiment over time is plotted using the gganim
 ```{r}
 # load packages 
 library(pacman)
-p_load(rlist, Sentida, ggplot2, tidyverse, gganimate, gifski)
+p_load(rlist, Sentida, ggplot2, tidyverse, gganimate)
 
 # set theme 
 theme_set(theme_bw()) 
