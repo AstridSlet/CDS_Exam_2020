@@ -14,5 +14,5 @@ stopwords.txt (file containing all stopwords, i.e. words that we want excluded i
 wordclouds folder (folder for containing word clouds)
 wave.png (picture which holds shape for the wordcloud; can be substituted by another .png files)
 
-## 3)
+## 3) Sentiment analysis
 The sentiment analysis markdown contains a guide on how to get the sentiment scores of the different portion of tweets using the danish sentiment score library Sentida and how to make visualisations of the development in sentiment over time using the gganimate package. 
