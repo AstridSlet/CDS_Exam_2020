@@ -121,7 +121,7 @@ tweets_after_dkgreen]
 wave_mask = np.array(Image.open( "wave.jpg")) # for the shape of the plots
 
 # 2) we need a word stoplist (which words not to plot in our plots)
-text_file = open("stopord.txt", 'r') # Downloading stoplist in danish
+text_file = open("stopwords.txt", 'r') # Downloading stoplist in danish
 stopwords = text_file.readlines()
 
 stopwords = [re.sub("\\n", "", word) for word in stopwords] # Cleaning the stoplist (Using regex to delete the '\n' using list comprehension)
