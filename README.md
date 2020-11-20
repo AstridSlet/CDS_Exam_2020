@@ -2,11 +2,11 @@
 
 This repository seeks to provide a simple way of getting and analyzing twitter data, if you are in possession of a txt file with tweet ID’s. 
 
-## 1) 
+## 1) Hydrating tweets
 The file hydrate_tweets_intro.md contains a short guide on how to hydrate tweet ID’s and get a json file with the full tweets and tweet metadata from the txt file using the python library Twarc. 
 
-## 2)
-The folder 2_split_and_wordcloud contains the necessary files for handling twitter data, and plotting word clouds.
+## 2) Handling twitter data and plotting word clouds
+The folder 2_split_and_wordcloud contains the necessary files for handling twitter data (splitting by dates or hashtags), and plotting word clouds.
 
 The 2_split_and_wordcloud folder contains:
 analysis.py (script for preprocessing hydrated tweets, splitting data to dates or by hashtags, plotting word clouds)
